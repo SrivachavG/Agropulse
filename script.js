@@ -10,10 +10,18 @@ const crops = [
         rainfallRange: [1000, 2500],
         tempRange: [20, 35],
         nutrients: { N: 'High', P: 'Medium', K: 'Medium' },
+        yieldPerAcre: 1.8, // Tons
         fertilizers: [
             { name: 'Urea', dosage: '100kg/acre', stage: 'Basal & Top dressing' },
             { name: 'DAP', dosage: '50kg/acre', stage: 'Sowing' },
             { name: 'MOP', dosage: '40kg/acre', stage: 'Vegetative' }
+        ],
+        calendar: [
+            { month: 'June', task: 'Nursery preparation & Sowing' },
+            { month: 'July', task: 'Transplanting to main field' },
+            { month: 'August', task: 'Weeding & Fertilization' },
+            { month: 'September', task: 'Irrigation management' },
+            { month: 'October', task: 'Harvesting & Threshing' }
         ],
         duration: '120-150 days',
         image: 'https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?q=80&w=800'
@@ -28,9 +36,17 @@ const crops = [
         rainfallRange: [500, 1000],
         tempRange: [10, 25],
         nutrients: { N: 'Medium', P: 'High', K: 'Medium' },
+        yieldPerAcre: 1.5,
         fertilizers: [
             { name: 'NPK 12:32:16', dosage: '75kg/acre', stage: 'Sowing' },
             { name: 'Urea', dosage: '80kg/acre', stage: 'Tillering' }
+        ],
+        calendar: [
+            { month: 'November', task: 'Land preparation & Sowing' },
+            { month: 'December', task: 'First Irrigation (CRI stage)' },
+            { month: 'January', task: 'Top dressing with Urea' },
+            { month: 'February', task: 'Weather monitoring' },
+            { month: 'March', task: 'Harvesting' }
         ],
         duration: '110-130 days',
         image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=800'
@@ -45,9 +61,16 @@ const crops = [
         rainfallRange: [600, 1200],
         tempRange: [18, 27],
         nutrients: { N: 'High', P: 'Medium', K: 'Low' },
+        yieldPerAcre: 2.2,
         fertilizers: [
             { name: 'Ammonium Sulfate', dosage: '60kg/acre', stage: 'Knee-high' },
             { name: 'Super Phosphate', dosage: '40kg/acre', stage: 'Basal' }
+        ],
+        calendar: [
+            { month: 'June', task: 'Sowing' },
+            { month: 'July', task: 'Thinning & Weeding' },
+            { month: 'August', task: 'Fertilization (Knee-high)' },
+            { month: 'September', task: 'Harvesting' }
         ],
         duration: '90-110 days',
         image: 'https://images.unsplash.com/photo-1551739440-5dd934d3a94a?q=80&w=800'
@@ -62,9 +85,16 @@ const crops = [
         rainfallRange: [500, 1000],
         tempRange: [21, 30],
         nutrients: { N: 'Medium', P: 'Medium', K: 'High' },
+        yieldPerAcre: 0.8,
         fertilizers: [
             { name: 'CAN', dosage: '50kg/acre', stage: 'Square formation' },
             { name: 'SSP', dosage: '100kg/acre', stage: 'Basal' }
+        ],
+        calendar: [
+            { month: 'May', task: 'Sowing' },
+            { month: 'July', task: 'Square formation management' },
+            { month: 'September', task: 'Boll development' },
+            { month: 'November', task: 'Picking starts' }
         ],
         duration: '160-180 days',
         image: 'https://images.unsplash.com/photo-1594904351111-a072f80b1a71?q=80&w=800'
@@ -79,9 +109,16 @@ const crops = [
         rainfallRange: [1500, 2500],
         tempRange: [20, 32],
         nutrients: { N: 'High', P: 'High', K: 'High' },
+        yieldPerAcre: 35.0,
         fertilizers: [
             { name: 'Bio-compost', dosage: '5 tons/acre', stage: 'Land prep' },
             { name: 'MOP', dosage: '60kg/acre', stage: '3 months' }
+        ],
+        calendar: [
+            { month: 'January', task: 'Planting sets' },
+            { month: 'April', task: 'Earthing up' },
+            { month: 'August', task: 'Propping' },
+            { month: 'December', task: 'Harvesting' }
         ],
         duration: '300-360 days',
         image: 'https://images.unsplash.com/photo-1590240974526-77893f49ebcb?q=80&w=800'
@@ -96,9 +133,15 @@ const crops = [
         rainfallRange: [300, 600],
         tempRange: [25, 40],
         nutrients: { N: 'Low', P: 'Low', K: 'Medium' },
+        yieldPerAcre: 0.6,
         fertilizers: [
             { name: 'Organic Manure', dosage: '2 tons/acre', stage: 'Basal' },
             { name: 'Azospirillum', dosage: '2kg/acre', stage: 'Seed treatment' }
+        ],
+        calendar: [
+            { month: 'July', task: 'Sowing' },
+            { month: 'August', task: 'Inter-cultivation' },
+            { month: 'September', task: 'Harvesting' }
         ],
         duration: '70-90 days',
         image: 'https://images.unsplash.com/photo-1593121925328-369ec8459c08?q=80&w=800'
@@ -159,6 +202,11 @@ const weatherDashboard = document.getElementById('weather-dashboard');
 const tickerContent = document.getElementById('ticker-content');
 const themeToggle = document.getElementById('theme-toggle');
 const fertilizerSection = document.getElementById('fertilizer-section');
+const soilDashboard = document.getElementById('soil-dashboard');
+const calendarModal = document.getElementById('calendar-modal');
+const calendarContent = document.getElementById('calendar-content');
+const modalTitle = document.getElementById('modal-title');
+const closeModalBtn = document.querySelector('.close-modal');
 // Global State
 let map;
 let currentMarker;
@@ -174,6 +222,7 @@ function initMap() {
         const { lat, lng } = e.latlng;
         setMarker(lat, lng);
         updateWeatherForLocation(lat, lng);
+        updateSoilData(lat, lng);
     });
 }
 
@@ -218,6 +267,54 @@ async function updateWeatherForLocation(lat, lng) {
             </div>
         `;
     }, 1500);
+}
+
+// Soil Data Simulation
+function updateSoilData(lat, lng) {
+    soilDashboard.innerHTML = `
+        <div class="weather-loading">
+            <div class="spinner"></div>
+            <p>Analyzing soil composition...</p>
+        </div>
+    `;
+
+    setTimeout(() => {
+        const n = Math.floor(40 + (Math.abs(Math.sin(lat * 10)) * 60));
+        const p = Math.floor(20 + (Math.abs(Math.cos(lng * 10)) * 50));
+        const k = Math.floor(30 + (Math.abs(Math.sin((lat + lng) * 5)) * 40));
+        const ph = (5.5 + (Math.abs(Math.cos(lat)) * 2.5)).toFixed(1);
+
+        soilDashboard.innerHTML = `
+            <div class="weather-content fade-in-up">
+                <div class="soil-stats">
+                    <div class="soil-item">
+                        <span class="soil-label">Nitrogen (N)</span>
+                        <div class="soil-bar-container"><div class="soil-bar" style="width: ${n}%"></div></div>
+                        <span class="soil-value">${n} mg/kg</span>
+                    </div>
+                    <div class="soil-item">
+                        <span class="soil-label">Phosphorus (P)</span>
+                        <div class="soil-bar-container"><div class="soil-bar" style="width: ${p}%"></div></div>
+                        <span class="soil-value">${p} mg/kg</span>
+                    </div>
+                    <div class="soil-item">
+                        <span class="soil-label">Potassium (K)</span>
+                        <div class="soil-bar-container"><div class="soil-bar" style="width: ${k}%"></div></div>
+                        <span class="soil-value">${k} mg/kg</span>
+                    </div>
+                    <div class="soil-item">
+                        <span class="soil-label">Soil pH</span>
+                        <div class="soil-bar-container"><div class="soil-bar" style="width: ${(ph / 10) * 100}%"></div></div>
+                        <span class="soil-value">${ph} pH</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Update form soil type based on pH as a hint
+        const soilType = ph < 6.5 ? 'Laterite' : ph > 7.5 ? 'Black' : 'Alluvial';
+        document.getElementById('soilType').value = soilType;
+    }, 1800);
 }
 
 function initTicker() {
@@ -322,6 +419,34 @@ function showFertilizers(cropId) {
     fertilizerSection.scrollIntoView({ behavior: 'smooth' });
 }
 
+// Planting Calendar Modal Logic
+function showCalendar(cropId) {
+    const crop = crops.find(c => c.id === cropId);
+    if (!crop) return;
+
+    modalTitle.textContent = `${crop.name} - Planting Calendar`;
+    calendarContent.innerHTML = `
+        <div class="calendar-timeline">
+            ${crop.calendar.map(item => `
+                <div class="timeline-item fade-in-up">
+                    <div class="timeline-month">${item.month}</div>
+                    <div class="timeline-task">${item.task}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    calendarModal.classList.add('active');
+}
+
+function closeModal() {
+    calendarModal.classList.remove('active');
+}
+
+closeModalBtn.addEventListener('click', closeModal);
+window.addEventListener('click', (e) => {
+    if (e.target === calendarModal) closeModal();
+});
+
 // Initialize on load
 window.addEventListener('load', () => {
     initMap();
@@ -343,11 +468,12 @@ advisorForm.addEventListener('submit', (e) => {
         season: document.getElementById('season').value,
         soilType: document.getElementById('soilType').value,
         rainfall: parseFloat(document.getElementById('rainfall').value),
-        temperature: parseFloat(document.getElementById('temperature').value)
+        temperature: parseFloat(document.getElementById('temperature').value),
+        landSize: parseFloat(document.getElementById('landSize').value || 1.0)
     };
 
     const results = getRecommendations(formData);
-    renderResults(results);
+    renderResults(results, formData.landSize);
 
     resultsArea.classList.remove('hidden');
     resultsArea.scrollIntoView({ behavior: 'smooth' });
@@ -359,7 +485,7 @@ resetBtn.addEventListener('click', () => {
     scrollToSection('advisor-section');
 });
 
-function renderResults(results) {
+function renderResults(results, landSize = 1.0) {
     if (results.length === 0) {
         resultsGrid.innerHTML = `
             <div class="glass" style="grid-column: 1/-1; padding: 60px; text-align: center;">
@@ -371,50 +497,55 @@ function renderResults(results) {
         return;
     }
 
-    resultsGrid.innerHTML = results.map((res, index) => `
-        <div class="crop-card glass fade-in-up" style="animation-delay: ${index * 0.1}s">
-            <div class="crop-image">
-                <img src="${res.crop.image}" alt="${res.crop.name}">
-                <div class="match-badge">${res.score}% Match</div>
-            </div>
-            <div class="crop-info">
-                <div class="crop-title">
-                    <div class="crop-name">
-                        <h3>${res.crop.name}</h3>
-                        <div class="scientific">${res.crop.scientificName}</div>
-                    </div>
+    resultsGrid.innerHTML = results.map((res, index) => {
+        const estYield = (res.crop.yieldPerAcre * landSize * (res.score / 100)).toFixed(1);
+
+        return `
+            <div class="crop-card glass fade-in-up" style="animation-delay: ${index * 0.1}s">
+                <div class="crop-image">
+                    <img src="${res.crop.image}" alt="${res.crop.name}">
+                    <div class="match-badge">${res.score}% Match</div>
                 </div>
-                <p class="crop-desc">${res.crop.description}</p>
-                <div class="crop-meta">
-                    <div class="meta-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        <span><strong>Duration:</strong> ${res.crop.duration}</span>
-                    </div>
-                    <div class="meta-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                        <div class="nutrients">
-                            <span class="nutrient-tag">N: ${res.crop.nutrients.N}</span>
-                            <span class="nutrient-tag">P: ${res.crop.nutrients.P}</span>
-                            <span class="nutrient-tag">K: ${res.crop.nutrients.K}</span>
+                <div class="crop-info">
+                    <div class="crop-title">
+                        <div class="crop-name">
+                            <h3>${res.crop.name}</h3>
+                            <div class="scientific">${res.crop.scientificName}</div>
                         </div>
                     </div>
+                    <p class="crop-desc">${res.crop.description}</p>
+                    
+                    <div class="yield-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                        </svg>
+                        Est. Yield: ${estYield} Tons
+                    </div>
+
+                    <div class="crop-meta" style="margin-top: 16px;">
+                        <div class="meta-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            <span><strong>Duration:</strong> ${res.crop.duration}</span>
+                        </div>
+                        <div class="meta-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            <div class="nutrients">
+                                <span class="nutrient-tag">N: ${res.crop.nutrients.N}</span>
+                                <span class="nutrient-tag">P: ${res.crop.nutrients.P}</span>
+                                <span class="nutrient-tag">K: ${res.crop.nutrients.K}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="factor-tags">
+                        ${res.matchedFactors.map(f => `<span class="factor-tag">${f}</span>`).join('')}
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px;">
+                        <button class="btn btn-outline" style="padding: 10px; font-size: 14px;" onclick="showFertilizers('${res.crop.id}')">Nutrients</button>
+                        <button class="btn btn-primary" style="padding: 10px; font-size: 14px;" onclick="showCalendar('${res.crop.id}')">Calendar</button>
+                    </div>
                 </div>
-                <div class="factor-tags">
-                    ${res.matchedFactors.map(f => `<span class="factor-tag">${f}</span>`).join('')}
-                </div>
-                <button class="btn btn-outline btn-full mt-4" onclick="showFertilizers('${res.crop.id}')">View Nutrient Guide</button>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
-// Add CSS for fade-in-up
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
-`;
-document.head.appendChild(style);
