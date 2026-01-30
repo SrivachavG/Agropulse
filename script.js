@@ -1,4 +1,4 @@
-// Crop Data
+// Crop Data with Advanced Fertilizer Info
 const crops = [
     {
         id: 'rice',
@@ -10,6 +10,11 @@ const crops = [
         rainfallRange: [1000, 2500],
         tempRange: [20, 35],
         nutrients: { N: 'High', P: 'Medium', K: 'Medium' },
+        fertilizers: [
+            { name: 'Urea', dosage: '100kg/acre', stage: 'Basal & Top dressing' },
+            { name: 'DAP', dosage: '50kg/acre', stage: 'Sowing' },
+            { name: 'MOP', dosage: '40kg/acre', stage: 'Vegetative' }
+        ],
         duration: '120-150 days',
         image: 'https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?q=80&w=800'
     },
@@ -23,6 +28,10 @@ const crops = [
         rainfallRange: [500, 1000],
         tempRange: [10, 25],
         nutrients: { N: 'Medium', P: 'High', K: 'Medium' },
+        fertilizers: [
+            { name: 'NPK 12:32:16', dosage: '75kg/acre', stage: 'Sowing' },
+            { name: 'Urea', dosage: '80kg/acre', stage: 'Tillering' }
+        ],
         duration: '110-130 days',
         image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=800'
     },
@@ -36,6 +45,10 @@ const crops = [
         rainfallRange: [600, 1200],
         tempRange: [18, 27],
         nutrients: { N: 'High', P: 'Medium', K: 'Low' },
+        fertilizers: [
+            { name: 'Ammonium Sulfate', dosage: '60kg/acre', stage: 'Knee-high' },
+            { name: 'Super Phosphate', dosage: '40kg/acre', stage: 'Basal' }
+        ],
         duration: '90-110 days',
         image: 'https://images.unsplash.com/photo-1551739440-5dd934d3a94a?q=80&w=800'
     },
@@ -49,6 +62,10 @@ const crops = [
         rainfallRange: [500, 1000],
         tempRange: [21, 30],
         nutrients: { N: 'Medium', P: 'Medium', K: 'High' },
+        fertilizers: [
+            { name: 'CAN', dosage: '50kg/acre', stage: 'Square formation' },
+            { name: 'SSP', dosage: '100kg/acre', stage: 'Basal' }
+        ],
         duration: '160-180 days',
         image: 'https://images.unsplash.com/photo-1594904351111-a072f80b1a71?q=80&w=800'
     },
@@ -62,6 +79,10 @@ const crops = [
         rainfallRange: [1500, 2500],
         tempRange: [20, 32],
         nutrients: { N: 'High', P: 'High', K: 'High' },
+        fertilizers: [
+            { name: 'Bio-compost', dosage: '5 tons/acre', stage: 'Land prep' },
+            { name: 'MOP', dosage: '60kg/acre', stage: '3 months' }
+        ],
         duration: '300-360 days',
         image: 'https://images.unsplash.com/photo-1590240974526-77893f49ebcb?q=80&w=800'
     },
@@ -75,6 +96,10 @@ const crops = [
         rainfallRange: [300, 600],
         tempRange: [25, 40],
         nutrients: { N: 'Low', P: 'Low', K: 'Medium' },
+        fertilizers: [
+            { name: 'Organic Manure', dosage: '2 tons/acre', stage: 'Basal' },
+            { name: 'Azospirillum', dosage: '2kg/acre', stage: 'Seed treatment' }
+        ],
         duration: '70-90 days',
         image: 'https://images.unsplash.com/photo-1593121925328-369ec8459c08?q=80&w=800'
     }
@@ -131,16 +156,16 @@ const resultsArea = document.getElementById('results-area');
 const resultsGrid = document.getElementById('results-grid');
 const resetBtn = document.getElementById('reset-btn');
 const weatherDashboard = document.getElementById('weather-dashboard');
-
+const tickerContent = document.getElementById('ticker-content');
+const themeToggle = document.getElementById('theme-toggle');
+const fertilizerSection = document.getElementById('fertilizer-section');
 // Global State
 let map;
 let currentMarker;
 
 // Initialize Map
 function initMap() {
-    // Default view: India center
     map = L.map('map').setView([20.5937, 78.9629], 5);
-
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -167,19 +192,15 @@ async function updateWeatherForLocation(lat, lng) {
         </div>
     `;
 
-    // Simulate API call
     setTimeout(() => {
-        // Generate pseudo-random data based on lat/lng
         const temp = Math.floor(20 + (Math.sin(lat) * 15));
         const rainfall = Math.floor(500 + (Math.cos(lng) * 1500));
         const season = temp > 25 ? 'Kharif' : 'Rabi';
 
-        // Update Form
         document.getElementById('temperature').value = temp;
         document.getElementById('rainfall').value = rainfall;
         document.getElementById('season').value = season;
 
-        // Update Weather Dashboard UI
         weatherDashboard.innerHTML = `
             <div class="weather-content fade-in-up">
                 <div class="weather-info">
@@ -199,9 +220,115 @@ async function updateWeatherForLocation(lat, lng) {
     }, 1500);
 }
 
+function initTicker() {
+    const marketData = [
+        { crop: 'Rice', price: '₹2,100', change: '+2.5%', up: true },
+        { crop: 'Wheat', price: '₹2,275', change: '-1.2%', up: false },
+        { crop: 'Cotton', price: '₹6,400', change: '+0.8%', up: true },
+        { crop: 'Sugarcane', price: '₹315', change: '0.0%', up: true },
+        { crop: 'Maize', price: '₹1,950', change: '-3.1%', up: false }
+    ];
+
+    tickerContent.innerHTML = marketData.map(item => `
+        <span class="ticker-item">
+            ${item.crop}: ${item.price} 
+            <span class="ticker-price ${item.up ? 'up' : 'down'}">${item.change}</span>
+        </span>
+    `).join('').repeat(10); // Dynamic repeat for continuous scrolling
+}
+
+// Theme Toggle System
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcons(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcons(newTheme);
+    });
+}
+
+function updateThemeIcons(theme) {
+    const sunIcon = themeToggle.querySelector('.sun-icon');
+    const moonIcon = themeToggle.querySelector('.moon-icon');
+    if (theme === 'dark') {
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+    } else {
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+    }
+}
+
+// Reveal on Scroll System
+function initReveals() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('section, .glass, .hero-text').forEach(el => {
+        el.classList.add('reveal');
+        observer.observe(el);
+    });
+}
+
+// 3D Card Tilt Effect
+function initTilt() {
+    document.addEventListener('mousemove', (e) => {
+        const cards = document.querySelectorAll('.crop-card');
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+            } else {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            }
+        });
+    });
+}
+
+// Fertilizer Advisor Logic
+function showFertilizers(cropId) {
+    const crop = crops.find(c => c.id === cropId);
+    if (!crop) return;
+
+    fertilizerSection.classList.remove('hidden');
+    fertilizerContent.innerHTML = `
+        <div class="fertilizer-grid fade-in-up">
+            ${crop.fertilizers.map(f => `
+                <div class="fertilizer-card">
+                    <h4>${f.name}</h4>
+                    <p><strong>Dosage:</strong> ${f.dosage}</p>
+                    <p><strong>Stage:</strong> ${f.stage}</p>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    fertilizerSection.scrollIntoView({ behavior: 'smooth' });
+}
+
 // Initialize on load
 window.addEventListener('load', () => {
     initMap();
+    initTicker();
+    initTheme();
+    initReveals();
+    initTilt();
 });
 
 // Interaction
@@ -275,6 +402,7 @@ function renderResults(results) {
                 <div class="factor-tags">
                     ${res.matchedFactors.map(f => `<span class="factor-tag">${f}</span>`).join('')}
                 </div>
+                <button class="btn btn-outline btn-full mt-4" onclick="showFertilizers('${res.crop.id}')">View Nutrient Guide</button>
             </div>
         </div>
     `).join('');
