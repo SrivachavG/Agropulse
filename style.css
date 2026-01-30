@@ -1,10 +1,10 @@
 :root {
-    --primary: #064e3b;
-    /* Executive Emerald */
+    --primary: #10b981;
+    /* Vibrant Emerald */
     --primary-light: #ecfdf5;
-    --primary-gradient: linear-gradient(135deg, #064e3b 0%, #059669 100%);
-    --secondary: #fbbf24;
-    /* Golden Harvest */
+    --primary-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --secondary: #facc15;
+    /* Bright Gold */
     --accent: #f8fafc;
     --bg-light: #f8fafc;
     --text-dark: #0f172a;
@@ -36,6 +36,130 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Global Scroll Progress Bar */
+.scroll-progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 10000;
+    background: transparent;
+}
+
+.scroll-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--primary-gradient);
+    box-shadow: 0 0 10px var(--primary);
+    transition: width 0.1s ease;
+}
+
+/* AI Market Predictor */
+.market-predictor {
+    padding: 100px 0;
+}
+
+.prediction-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+}
+
+.prediction-card {
+    padding: 24px;
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--secondary);
+}
+
+.trend-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    margin: 12px 0;
+}
+
+.bullish {
+    color: #10b981;
+}
+
+.bearish {
+    color: #ef4444;
+}
+
+.mini-chart {
+    height: 60px;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    margin-top: 16px;
+}
+
+.bar-sm {
+    flex: 1;
+    background: var(--primary);
+    opacity: 0.3;
+    border-radius: 4px;
+    transition: all 0.5s ease;
+}
+
+.prediction-card:hover .bar-sm {
+    opacity: 1;
+    transform: scaleY(1.1);
+}
+
+/* Smart Help Bot UI */
+.smart-help {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+.help-btn {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-gradient);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.help-btn:hover {
+    transform: scale(1.1) rotate(15deg);
+}
+
+.help-tooltip {
+    position: absolute;
+    bottom: 0px;
+    right: 80px;
+    width: 250px;
+    padding: 24px;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    font-size: 14px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(20px);
+    transition: var(--transition);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.smart-help:hover .help-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
 }
 
 body {

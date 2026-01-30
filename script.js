@@ -545,7 +545,52 @@ window.addEventListener('load', () => {
     initLivestock();
     initCustomCursor();
     initMagneticButtons();
+    initScrollProgress();
+    initMarketPredictor();
 });
+
+function initMarketPredictor() {
+    const grid = document.getElementById('prediction-grid');
+    const marketData = [
+        { crop: 'Rice', current: '$420/t', trend: 'up', prediction: '+5.2%' },
+        { crop: 'Wheat', current: '$280/t', trend: 'down', prediction: '-2.1%' },
+        { crop: 'Maize', current: '$190/t', trend: 'up', prediction: '+1.8%' },
+        { crop: 'Cotton', current: '$1.2/kg', trend: 'up', prediction: '+8.5%' }
+    ];
+    if (!grid) return;
+
+    grid.innerHTML = marketData.map((item, index) => `
+        <div class="prediction-card glass fade-in-up" style="animation-delay: ${index * 0.1}s">
+            <div style="font-size: 14px; opacity: 0.6; font-weight: 600;">${item.crop} Futures</div>
+            <div style="font-size: 24px; font-weight: 800; margin-top: 4px;">${item.current}</div>
+            <div class="trend-indicator ${item.trend === 'up' ? 'bullish' : 'bearish'}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <path d="${item.trend === 'up' ? 'M5 12l7-7 7 7' : 'M19 12l-7 7-7-7'}" />
+                    <path d="${item.trend === 'up' ? 'M12 19V5' : 'M12 5v14'}" />
+                </svg>
+                <span>${item.prediction} Target</span>
+            </div>
+            <div class="mini-chart">
+                ${Array(7).fill(0).map(() => `
+                    <div class="bar-sm" style="height: ${30 + Math.random() * 70}%"></div>
+                `).join('')}
+            </div>
+            <p style="font-size: 11px; opacity: 0.5; margin-top: 12px;">AI Sentiment: ${item.trend === 'up' ? 'Strong Buy' : 'Neutral Hold'}</p>
+        </div>
+    `).join('');
+}
+
+function initScrollProgress() {
+    const scrollBar = document.getElementById('scroll-bar');
+    if (!scrollBar) return;
+
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        scrollBar.style.width = scrolled + "%";
+    });
+}
 
 function initCustomCursor() {
     const cursor = document.querySelector('.custom-cursor');
