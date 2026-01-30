@@ -27,12 +27,6 @@
   <div class="custom-cursor"></div>
   <div class="custom-cursor-follower"></div>
   <div class="mesh-bg"></div>
-  <div class="background-blobs">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <div class="aurora"></div>
-  </div>
 
   <div class="market-ticker">
     <div class="ticker-content" id="ticker-content">
@@ -406,12 +400,18 @@
       <strong>AgroPulse AI Assistant</strong><br>
       Explore our AI tools below! I can predict market trends, diagnose pests, and monitor your livestock in real-time.
     </div>
-    <div class="help-btn">
+    <div class="help-btn" onclick="toggleHelp()">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
       </svg>
     </div>
   </div>
+
+  <button id="scroll-top" class="scroll-top-btn glass" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15" />
+    </svg>
+  </button>
 
   <footer class="footer">
     <div class="container">

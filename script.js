@@ -580,8 +580,19 @@ function initMarketPredictor() {
     `).join('');
 }
 
+function toggleHelp() {
+    const tooltip = document.querySelector('.help-tooltip');
+    tooltip.classList.toggle('active');
+
+    // Auto-hide after 5 seconds if opened
+    if (tooltip.classList.contains('active')) {
+        setTimeout(() => tooltip.classList.remove('active'), 8000);
+    }
+}
+
 function initScrollProgress() {
     const scrollBar = document.getElementById('scroll-bar');
+    const scrollTopBtn = document.getElementById('scroll-top');
     if (!scrollBar) return;
 
     window.addEventListener('scroll', () => {
@@ -589,6 +600,19 @@ function initScrollProgress() {
         const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = (winScroll / height) * 100;
         scrollBar.style.width = scrolled + "%";
+
+        const nav = document.querySelector('.navbar');
+        if (winScroll > 50) {
+            nav?.classList.add('scrolled');
+        } else {
+            nav?.classList.remove('scrolled');
+        }
+
+        if (winScroll > 500) {
+            scrollTopBtn?.classList.add('visible');
+        } else {
+            scrollTopBtn?.classList.remove('visible');
+        }
     });
 }
 
