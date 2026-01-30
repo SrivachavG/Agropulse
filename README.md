@@ -1,73 +1,31 @@
-# React + TypeScript + Vite
+# 💎 AgroPulse | Luxury AI Crop Advisor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AgroPulse is a premium, high-end agricultural intelligence platform designed to empower farmers with precision data and AI-driven insights. Built with a focus on "luxurious" aesthetics and a seamless user experience.
 
-Currently, two official plugins are available:
+## ✨ Premium Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🏥 **AI Disease Scanner**: Upload leaf photos for instant, automated disease analysis and treatment plans with real-time scanning animations.
+- 🐃 **Livestock Health Monitor**: Track heart rates, body temperature, and status for cattle, sheep, and poultry.
+- 🛰️ **Satellite Health Index**: Real-time NDVI (Greenness) analysis of your land using geospatial intelligence.
+- 📊 **Yield Performance Analytics**: Advanced yield estimation based on climate data, soil composition, and land size.
+- 💧 **Smart Irrigation Planner**: Personalized supplemental water requirements based on real-time rainfall data.
+- 🎨 **Luxury UI/UX**: Executive Emerald & Gold theme, custom fluid trailing cursor, and magnetic button interactions.
 
-## React Compiler
+## 🚀 Technology Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Core**: Vanilla HTML5, CSS3, JavaScript (ES6+)
+- **Build Tool**: Vite
+- **Integrations**: 
+  - **Leaflet.js**: Geospatial mapping and location tracking
+  - **OpenWeather API**: Real-time climate conditions
+  - **Luxury Design System**: Custom-built glassmorphic components and mesh gradients
 
-## Expanding the ESLint configuration
+## 🛠️ Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. Clone the repository: `git clone https://github.com/SrivachavG/Agropulse.git`
+2. Install dependencies: `npm install`
+3. Start the dev server: `npm run dev`
+4. Build for production: `npm run build`
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+*Empowering the future of agriculture with precision and elegance.*
