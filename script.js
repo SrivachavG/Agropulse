@@ -130,6 +130,79 @@ const advisorForm = document.getElementById('advisor-form');
 const resultsArea = document.getElementById('results-area');
 const resultsGrid = document.getElementById('results-grid');
 const resetBtn = document.getElementById('reset-btn');
+const weatherDashboard = document.getElementById('weather-dashboard');
+
+// Global State
+let map;
+let currentMarker;
+
+// Initialize Map
+function initMap() {
+    // Default view: India center
+    map = L.map('map').setView([20.5937, 78.9629], 5);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    map.on('click', (e) => {
+        const { lat, lng } = e.latlng;
+        setMarker(lat, lng);
+        updateWeatherForLocation(lat, lng);
+    });
+}
+
+function setMarker(lat, lng) {
+    if (currentMarker) map.removeLayer(currentMarker);
+    currentMarker = L.marker([lat, lng]).addTo(map);
+    map.setView([lat, lng], 8);
+}
+
+// Weather Service Simulation
+async function updateWeatherForLocation(lat, lng) {
+    weatherDashboard.innerHTML = `
+        <div class="weather-loading">
+            <div class="spinner"></div>
+            <p>Analyzing climate at ${lat.toFixed(2)}, ${lng.toFixed(2)}...</p>
+        </div>
+    `;
+
+    // Simulate API call
+    setTimeout(() => {
+        // Generate pseudo-random data based on lat/lng
+        const temp = Math.floor(20 + (Math.sin(lat) * 15));
+        const rainfall = Math.floor(500 + (Math.cos(lng) * 1500));
+        const season = temp > 25 ? 'Kharif' : 'Rabi';
+
+        // Update Form
+        document.getElementById('temperature').value = temp;
+        document.getElementById('rainfall').value = rainfall;
+        document.getElementById('season').value = season;
+
+        // Update Weather Dashboard UI
+        weatherDashboard.innerHTML = `
+            <div class="weather-content fade-in-up">
+                <div class="weather-info">
+                    <h4>Temperature</h4>
+                    <div class="weather-temp">${temp}°C</div>
+                </div>
+                <div class="weather-info">
+                    <h4>Est. Rainfall</h4>
+                    <div class="weather-temp">${rainfall}mm</div>
+                </div>
+                <div class="weather-info">
+                    <h4>Season</h4>
+                    <div class="weather-temp">${season}</div>
+                </div>
+            </div>
+        `;
+    }, 1500);
+}
+
+// Initialize on load
+window.addEventListener('load', () => {
+    initMap();
+});
 
 // Interaction
 function scrollToSection(id) {

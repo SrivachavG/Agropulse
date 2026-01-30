@@ -280,7 +280,7 @@ p {
 .image-container img {
     width: 100%;
     height: 100%;
-    object-cover: cover;
+    object-fit: cover;
     border-radius: calc(var(--radius-lg) - 8px);
     filter: grayscale(0.2);
     transition: filter 0.5s;
@@ -350,9 +350,7 @@ h2 {
 }
 
 .advisor-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 48px;
+    padding: 32px;
 }
 
 .form-grid {
@@ -405,7 +403,105 @@ select:focus {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+}
+
+.mb-6 {
+    margin-bottom: 24px;
+}
+
+/* Advisor Grid Layout */
+.advisor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.advisor-main {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Weather Dashboard */
+.weather-dashboard {
+    padding: 24px;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.weather-content {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    align-items: center;
+}
+
+.weather-info h4 {
+    font-size: 14px;
+    opacity: 0.6;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.weather-temp {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.weather-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(45, 90, 39, 0.1);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Map Container */
+.map-container {
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    padding: 8px;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    border-radius: calc(var(--radius-lg) - 12px);
+    z-index: 1;
+}
+
+.map-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: var(--glass);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    z-index: 2;
+    pointer-events: none;
+    border: 1px solid var(--glass-border);
 }
 
 /* Results */
