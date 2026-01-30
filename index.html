@@ -305,8 +305,13 @@
           <p>Select the symptoms you observe on your crop for an instant AI-powered diagnosis and treatment plan.</p>
         </div>
 
+        <div class="diagnostics-tabs glass mb-6">
+          <button class="tab-btn active" onclick="toggleDiagnosticMode('manual')">Manual Selection</button>
+          <button class="tab-btn" onclick="toggleDiagnosticMode('scan')">AI Visual Scan</button>
+        </div>
+
         <div class="diagnostics-grid">
-          <div class="symptom-selector glass">
+          <div class="symptom-selector glass" id="manual-diagnosis">
             <h3>Step 1: Select Symptoms</h3>
             <div class="symptom-tags" id="symptom-tags">
               <label class="symptom-tag"><input type="checkbox" value="yellow_spots"> Yellow Spots</label>
@@ -318,6 +323,38 @@
               <label class="symptom-tag"><input type="checkbox" value="root_rot"> Root Rot</label>
             </div>
             <button id="diagnose-btn" class="btn btn-primary btn-full mt-6">Run AI Diagnosis</button>
+          </div>
+
+          <!-- New AI Scanner UI -->
+          <div class="symptom-selector glass hidden" id="scan-diagnosis">
+            <h3>Step 1: AI Visual Scan</h3>
+            <div class="scanner-container">
+              <div class="scanner-box">
+                <div class="scanner-line"></div>
+                <div class="preview-placeholder">
+                  <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    style="opacity: 0.2;">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                    <circle cx="12" cy="13" r="4" />
+                  </svg>
+                  <p>Upload leaf photo for scanning</p>
+                </div>
+                <img id="scan-preview" src="" class="hidden" alt="Leaf Preview">
+              </div>
+            </div>
+            <div class="scan-actions mt-6">
+              <input type="file" id="leaf-upload" accept="image/*" class="hidden">
+              <button class="btn btn-outline btn-full" onclick="document.getElementById('leaf-upload').click()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  style="margin-right: 8px;">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                Upload Photo
+              </button>
+              <button id="start-scan-btn" class="btn btn-primary btn-full mt-2 hidden">Start AI Scan</button>
+            </div>
           </div>
 
           <div class="diagnosis-result glass" id="diagnosis-result">

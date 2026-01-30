@@ -659,13 +659,71 @@ function updateSatInsights() {
     }
 }
 
-function setupDiagnostics() {
-    diagnoseBtn?.addEventListener('click', runDiagnosis);
+function toggleDiagnosticMode(mode) {
+    const manualBtn = document.querySelector('[onclick="toggleDiagnosticMode(\'manual\')"]');
+    const scanBtn = document.querySelector('[onclick="toggleDiagnosticMode(\'scan\')"]');
+    const manualDiv = document.getElementById('manual-diagnosis');
+    const scanDiv = document.getElementById('scan-diagnosis');
+
+    if (mode === 'manual') {
+        manualBtn.classList.add('active');
+        scanBtn.classList.remove('active');
+        manualDiv.classList.remove('hidden');
+        scanDiv.classList.add('hidden');
+    } else {
+        manualBtn.classList.remove('active');
+        scanBtn.classList.add('active');
+        manualDiv.classList.add('hidden');
+        scanDiv.classList.remove('hidden');
+    }
 }
 
-function runDiagnosis() {
-    const checkedSymptoms = Array.from(document.querySelectorAll('.symptom-tag input:checked'))
-        .map(input => input.value);
+function setupDiagnostics() {
+    diagnoseBtn?.addEventListener('click', runDiagnosis);
+
+    // Scanner Logic
+    const leafUpload = document.getElementById('leaf-upload');
+    const startScanBtn = document.getElementById('start-scan-btn');
+    const scanPreview = document.getElementById('scan-preview');
+    const previewPlaceholder = document.querySelector('.preview-placeholder');
+    const scannerBox = document.querySelector('.scanner-box');
+
+    leafUpload?.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                scanPreview.src = event.target.result;
+                scanPreview.classList.remove('hidden');
+                previewPlaceholder.classList.add('hidden');
+                startScanBtn.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    startScanBtn?.addEventListener('click', () => {
+        startScanBtn.disabled = true;
+        startScanBtn.textContent = 'AI Analyzing...';
+        scannerBox.classList.add('scanning');
+
+        setTimeout(() => {
+            scannerBox.classList.remove('scanning');
+            startScanBtn.disabled = false;
+            startScanBtn.textContent = 'Start AI Scan';
+
+            // Randomly pick 1-2 symptoms for simulation
+            const possibleSymptoms = ['yellow_spots', 'wilting', 'holes_in_leaves', 'white_mould'];
+            const randomSymptoms = possibleSymptoms.sort(() => 0.5 - Math.random()).slice(0, 2);
+
+            runDiagnosis(randomSymptoms);
+        }, 3000);
+    });
+}
+
+function runDiagnosis(predefinedSymptoms = null) {
+    const checkedSymptoms = predefinedSymptoms ||
+        Array.from(document.querySelectorAll('.symptom-tag input:checked')).map(input => input.value);
 
     if (checkedSymptoms.length === 0) {
         diagnosisResult.innerHTML = `
