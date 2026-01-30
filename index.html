@@ -49,6 +49,7 @@
       <div class="nav-links">
         <a href="#features">Features</a>
         <a href="#diagnostics-section">Diagnostics</a>
+        <a href="#livestock-section">Livestock</a>
         <a href="#about">About</a>
         <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
           <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -78,9 +79,10 @@
     <section id="hero" class="hero">
       <div class="container grid-2">
         <div class="hero-text fade-in-left">
-          <span class="badge">AI-POWERED AGRICULTURE</span>
-          <h1>Smarter Crops, <br><span class="highlight">Higher Yields.</span></h1>
-          <p>AgroPulse uses advanced geospatial intelligence and soil data to recommend the perfect crops for your land.
+          <span class="badge staggered-1">AI-POWERED AGRICULTURE</span>
+          <h1 class="staggered-2">Smarter Crops, <br><span class="highlight">Higher Yields.</span></h1>
+          <p class="staggered-3">AgroPulse uses advanced geospatial intelligence and soil data to recommend the perfect
+            crops for your land.
             Optimize your harvest with Precision Ag.</p>
 
           <div class="hero-actions">
@@ -163,6 +165,22 @@
               <div class="weather-loading">
                 <div class="spinner"></div>
                 <p>Analyzing soil composition...</p>
+              </div>
+            </div>
+
+            <!-- Satellite Health Insight Widget -->
+            <div class="sat-insight-card glass mb-6" id="sat-insight-card">
+              <div class="sat-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                Satellite Analysis
+              </div>
+              <div class="sat-map-mock"></div>
+              <div class="sat-metrics">
+                <span>NDVI Index: <strong id="ndvi-val">0.74</strong></span>
+                <span>Crop Health: <strong id="sat-status">Optimal</strong></span>
               </div>
             </div>
 
@@ -308,6 +326,20 @@
               <p>Select symptoms to start diagnosis</p>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Livestock Monitoring Section -->
+    <section id="livestock-section" class="livestock">
+      <div class="container">
+        <div class="section-header text-center">
+          <h2>Livestock Monitoring</h2>
+          <p>Real-time biometric insights and health monitoring for your farm animals.</p>
+        </div>
+
+        <div class="livestock-grid" id="livestock-grid">
+          <!-- Livestock cards will be injected here -->
         </div>
       </div>
     </section>

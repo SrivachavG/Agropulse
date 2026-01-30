@@ -838,13 +838,19 @@ select:focus {
 @keyframes fadeInLeft {
     from {
         opacity: 0;
-        transform: translateX(-40px);
+        transform: translateX(-60px);
+        filter: blur(10px);
     }
 
     to {
         opacity: 1;
         transform: translateX(0);
+        filter: blur(0);
     }
+}
+
+.fade-in-left {
+    animation: fadeInLeft 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* Advisor Enhancements */
@@ -1071,13 +1077,141 @@ select:focus {
 @keyframes fadeInRight {
     from {
         opacity: 0;
-        transform: translateX(50px);
+        transform: translateX(60px);
+        filter: blur(10px);
     }
 
     to {
         opacity: 1;
         transform: translateX(0);
+        filter: blur(0);
     }
+}
+
+.fade-in-right {
+    animation: fadeInRight 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Livestock Monitoring */
+.livestock {
+    padding: 100px 0;
+    background: var(--bg-light);
+    border-top: 1px solid var(--glass-border);
+}
+
+.livestock-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    margin-top: 40px;
+}
+
+.livestock-card {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.animal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.animal-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.health-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.metric-item {
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 12px;
+    text-align: center;
+}
+
+[data-theme="dark"] .metric-item {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.metric-label {
+    font-size: 11px;
+    opacity: 0.6;
+    text-transform: uppercase;
+}
+
+.metric-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Sat Insight Widget */
+.sat-insight-card {
+    padding: 24px;
+    background: var(--primary-gradient);
+    color: white;
+    margin: 24px 0;
+    border-radius: var(--radius-md);
+}
+
+.sat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.sat-map-mock {
+    height: 120px;
+    background: linear-gradient(45deg, #4ade80, #2d5a27);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.sat-map-mock::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+}
+
+.sat-metrics {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.staggered-1 {
+    animation-delay: 0.1s;
+}
+
+.staggered-2 {
+    animation-delay: 0.2s;
+}
+
+.staggered-3 {
+    animation-delay: 0.3s;
 }
 
 /* Mobile Responsive */

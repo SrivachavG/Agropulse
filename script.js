@@ -193,6 +193,36 @@ const diseases = [
     }
 ];
 
+const animals = [
+    {
+        type: 'Cattle',
+        id: 'cattle-1',
+        icon: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21h4c1.1 0 2-.9 2-2v-4.5c0-.6-.2-1.1-.6-1.5-.4-.4-.9-.6-1.5-.6H12v8.6Z"/><path d="M12 21H8c-1.1 0-2-.9-2-2v-4.5c0-.6.2-1.1.6-1.5.4-.4.9-.6 1.5-.6H12v8.6Z"/><path d="M12 12V4a2 2 0 0 0-4 0v8"/><path d="M12 4a2 2 0 0 1 4 0v8"/></svg>',
+        heartRate: 65,
+        temp: '38.5°C',
+        status: 'Healthy',
+        location: 'North Pasture'
+    },
+    {
+        type: 'Sheep',
+        id: 'sheep-1',
+        icon: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M9 11v10"/><path d="M9 15H5c-1.1 0-2-.9-2-2v-1.5c0-.6.2-1.1.6-1.5.4-.4.9-.6 1.5-.6h11.8c.6 0 1.1.2 1.5.6.4.4.6.9.6 1.5V13c0 1.1-.9 2-2 2h-4"/></svg>',
+        heartRate: 75,
+        temp: '39.1°C',
+        status: 'Active',
+        location: 'West Ridge'
+    },
+    {
+        type: 'Poultry',
+        id: 'poultry-1',
+        icon: '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22v-4"/><path d="M9 18h6"/><path d="M12 14v-2"/><path d="M12 10V6a2 2 0 0 0-4 0v4"/><path d="M12 6a2 2 0 0 1 4 0v4"/></svg>',
+        heartRate: 250,
+        temp: '41.2°C',
+        status: 'Stress-Free',
+        location: 'Coop A'
+    }
+];
+
 // Logic
 function getRecommendations(data) {
     return crops.map(crop => {
@@ -255,8 +285,10 @@ const closeModalBtn = document.querySelector('.close-modal');
 const yieldModal = document.getElementById('yield-modal');
 const yieldContent = document.getElementById('yield-content');
 const yieldModalTitle = document.getElementById('yield-modal-title');
-const diagnoseBtn = document.getElementById('diagnose-btn');
 const diagnosisResult = document.getElementById('diagnosis-result');
+const livestockGrid = document.getElementById('livestock-grid');
+const ndviVal = document.getElementById('ndvi-val');
+const satStatus = document.getElementById('sat-status');
 // Global State
 let map;
 let currentMarker;
@@ -273,6 +305,7 @@ function initMap() {
         setMarker(lat, lng);
         updateWeatherForLocation(lat, lng);
         updateSoilData(lat, lng);
+        updateSatInsights();
     });
 }
 
@@ -509,7 +542,61 @@ window.addEventListener('load', () => {
     initReveals();
     initTilt();
     setupDiagnostics();
+    initLivestock();
 });
+
+function initLivestock() {
+    if (!livestockGrid) return;
+    livestockGrid.innerHTML = animals.map((animal, index) => `
+        <div class="livestock-card glass fade-in-up" style="animation-delay: ${index * 0.1}s">
+            <div class="animal-header">
+                <div class="animal-icon">${animal.icon}</div>
+                <span class="badge ${animal.status === 'Healthy' ? '' : 'badge-warning'}">${animal.status}</span>
+            </div>
+            <div class="animal-info">
+                <h3>${animal.type} #${index + 1}</h3>
+                <p style="font-size: 12px; opacity: 0.7;">${animal.location}</p>
+            </div>
+            <div class="health-metrics">
+                <div class="metric-item">
+                    <div class="metric-label">Heart Rate</div>
+                    <div class="metric-value">${animal.heartRate} BPM</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">Body Temp</div>
+                    <div class="metric-value">${animal.temp}</div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    // Simulate real-time updates
+    setInterval(() => {
+        const items = document.querySelectorAll('.metric-value');
+        items.forEach(item => {
+            if (item.textContent.includes('BPM')) {
+                const current = parseInt(item.textContent);
+                item.textContent = `${current + Math.floor(Math.random() * 3 - 1)} BPM`;
+            }
+        });
+    }, 3000);
+}
+
+function updateSatInsights() {
+    const ndvi = (Math.random() * (0.85 - 0.4) + 0.4).toFixed(2);
+    ndviVal.textContent = ndvi;
+
+    if (ndvi > 0.7) {
+        satStatus.textContent = 'High Vigour';
+        satStatus.style.color = '#4ade80';
+    } else if (ndvi > 0.5) {
+        satStatus.textContent = 'Stable';
+        satStatus.style.color = '#fbbf24';
+    } else {
+        satStatus.textContent = 'Low Vigour';
+        satStatus.style.color = '#f87171';
+    }
+}
 
 function setupDiagnostics() {
     diagnoseBtn?.addEventListener('click', runDiagnosis);
