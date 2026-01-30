@@ -543,7 +543,68 @@ window.addEventListener('load', () => {
     initTilt();
     setupDiagnostics();
     initLivestock();
+    initCustomCursor();
+    initMagneticButtons();
 });
+
+function initCustomCursor() {
+    const cursor = document.querySelector('.custom-cursor');
+    const follower = document.querySelector('.custom-cursor-follower');
+
+    if (!cursor || !follower) return;
+
+    let posX = 0, posY = 0;
+    let mouseX = 0, mouseY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        cursor.style.left = `${mouseX}px`;
+        cursor.style.top = `${mouseY}px`;
+    });
+
+    // Smooth follower tracking
+    setInterval(() => {
+        posX += (mouseX - posX) / 8;
+        posY += (mouseY - posY) / 8;
+
+        follower.style.left = `${posX}px`;
+        follower.style.top = `${posY}px`;
+    }, 16);
+
+    // Expand on links and buttons
+    const targets = document.querySelectorAll('button, a, .crop-card, .symptom-tag');
+    targets.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(2.5)';
+            cursor.style.background = 'rgba(251, 191, 36, 0.4)';
+            follower.style.transform = 'translate(-50%, -50%) scale(0)';
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+            cursor.style.background = 'var(--secondary)';
+            follower.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
+    });
+}
+
+function initMagneticButtons() {
+    const btns = document.querySelectorAll('.btn-primary');
+    btns.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) scale(1.02)`;
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translate(0, 0) scale(1)';
+        });
+    });
+}
 
 function initLivestock() {
     if (!livestockGrid) return;
