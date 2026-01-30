@@ -1079,4 +1079,251 @@ select:focus {
     .nav-links {
         display: none;
     }
+
+    .nav-links {
+        display: none;
+    }
+}
+
+/* New Tools: Diagnostics Section */
+.diagnostics {
+    padding: 100px 0;
+    background: rgba(45, 90, 39, 0.02);
+    border-top: 1px solid var(--glass-border);
+}
+
+[data-theme="dark"] .diagnostics {
+    background: rgba(74, 222, 128, 0.02);
+}
+
+.diagnostics-grid {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 32px;
+    margin-top: 40px;
+}
+
+@media (max-width: 968px) {
+    .diagnostics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.symptom-selector {
+    padding: 32px;
+}
+
+.symptom-selector h3 {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.symptom-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.symptom-tag {
+    background: var(--bg-light);
+    border: 1px solid var(--glass-border);
+    padding: 8px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.symptom-tag:hover {
+    border-color: var(--primary);
+}
+
+.symptom-tag:has(input:checked) {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.symptom-tag input {
+    display: none;
+}
+
+.diagnosis-result {
+    min-height: 400px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    opacity: 0.6;
+}
+
+.diagnosis-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.disease-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.disease-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--primary-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+}
+
+.disease-title h3 {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.treatment-plan {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--glass-border);
+}
+
+.treatment-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 16px;
+}
+
+@media (max-width: 600px) {
+    .treatment-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+.treatment-item h4 {
+    font-size: 14px;
+    opacity: 0.6;
+    margin-bottom: 8px;
+    color: var(--primary);
+}
+
+/* Irrigation & Yield Analytics */
+.irrigation-card {
+    background: var(--primary-light);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+[data-theme="dark"] .irrigation-card {
+    background: rgba(74, 222, 128, 0.1);
+}
+
+.irrigation-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.irrigation-value {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.yield-content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.yield-scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.yield-scenario-card {
+    padding: 24px;
+    border-radius: var(--radius-md);
+    background: rgba(0, 0, 0, 0.03);
+    text-align: center;
+}
+
+[data-theme="dark"] .yield-scenario-card {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.scenario-title {
+    font-size: 12px;
+    opacity: 0.6;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.scenario-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.yield-chart {
+    height: 250px;
+    display: flex;
+    align-items: flex-end;
+    gap: 32px;
+    padding-bottom: 40px;
+    margin-top: 20px;
+    border-bottom: 2px solid var(--glass-border);
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.chart-bar {
+    flex: 1;
+    background: var(--primary-gradient);
+    border-radius: 12px 12px 0 0;
+    position: relative;
+    transition: height 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chart-bar::after {
+    content: attr(data-value);
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.chart-label {
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
 }

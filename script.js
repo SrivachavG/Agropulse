@@ -11,6 +11,7 @@ const crops = [
         tempRange: [20, 35],
         nutrients: { N: 'High', P: 'Medium', K: 'Medium' },
         yieldPerAcre: 1.8, // Tons
+        waterFactor: 1500, // liters per sq meter
         fertilizers: [
             { name: 'Urea', dosage: '100kg/acre', stage: 'Basal & Top dressing' },
             { name: 'DAP', dosage: '50kg/acre', stage: 'Sowing' },
@@ -37,6 +38,7 @@ const crops = [
         tempRange: [10, 25],
         nutrients: { N: 'Medium', P: 'High', K: 'Medium' },
         yieldPerAcre: 1.5,
+        waterFactor: 600,
         fertilizers: [
             { name: 'NPK 12:32:16', dosage: '75kg/acre', stage: 'Sowing' },
             { name: 'Urea', dosage: '80kg/acre', stage: 'Tillering' }
@@ -62,6 +64,7 @@ const crops = [
         tempRange: [18, 27],
         nutrients: { N: 'High', P: 'Medium', K: 'Low' },
         yieldPerAcre: 2.2,
+        waterFactor: 800,
         fertilizers: [
             { name: 'Ammonium Sulfate', dosage: '60kg/acre', stage: 'Knee-high' },
             { name: 'Super Phosphate', dosage: '40kg/acre', stage: 'Basal' }
@@ -86,6 +89,7 @@ const crops = [
         tempRange: [21, 30],
         nutrients: { N: 'Medium', P: 'Medium', K: 'High' },
         yieldPerAcre: 0.8,
+        waterFactor: 900,
         fertilizers: [
             { name: 'CAN', dosage: '50kg/acre', stage: 'Square formation' },
             { name: 'SSP', dosage: '100kg/acre', stage: 'Basal' }
@@ -110,6 +114,7 @@ const crops = [
         tempRange: [20, 32],
         nutrients: { N: 'High', P: 'High', K: 'High' },
         yieldPerAcre: 35.0,
+        waterFactor: 2500,
         fertilizers: [
             { name: 'Bio-compost', dosage: '5 tons/acre', stage: 'Land prep' },
             { name: 'MOP', dosage: '60kg/acre', stage: '3 months' }
@@ -134,6 +139,7 @@ const crops = [
         tempRange: [25, 40],
         nutrients: { N: 'Low', P: 'Low', K: 'Medium' },
         yieldPerAcre: 0.6,
+        waterFactor: 400,
         fertilizers: [
             { name: 'Organic Manure', dosage: '2 tons/acre', stage: 'Basal' },
             { name: 'Azospirillum', dosage: '2kg/acre', stage: 'Seed treatment' }
@@ -145,6 +151,45 @@ const crops = [
         ],
         duration: '70-90 days',
         image: 'https://images.unsplash.com/photo-1593121925328-369ec8459c08?q=80&w=800'
+    }
+];
+
+const diseases = [
+    {
+        name: 'Rice Blast',
+        symptoms: ['yellow_spots', 'wilting'],
+        description: 'A serious fungal disease causing leaf spots and neck rot.',
+        treatment: {
+            organic: 'Apply Neem oil spray or Pseudomonas fluorescens.',
+            chemical: 'Spray Tricyclazole 75 WP @ 0.6 g/l.'
+        }
+    },
+    {
+        name: 'Wheat Rust',
+        symptoms: ['brown_edges', 'yellow_spots'],
+        description: 'Fungal disease that produces reddish-brown spores on leaves and stems.',
+        treatment: {
+            organic: 'Use resistant varieties and crop rotation.',
+            chemical: 'Spray Propiconazole 25 EC @ 1 ml/l.'
+        }
+    },
+    {
+        name: 'Root Rot',
+        symptoms: ['root_rot', 'wilting', 'stunted_growth'],
+        description: 'Caused by overwatering and soil fungi, leads to decaying roots.',
+        treatment: {
+            organic: 'Improve drainage and apply Trichoderma viride.',
+            chemical: 'Soil drenching with Carbendazim @ 1 g/l.'
+        }
+    },
+    {
+        name: 'Downy Mildew',
+        symptoms: ['white_mould', 'yellow_spots'],
+        description: 'Fungal infection appearing as white fluffy growth on leaf undersides.',
+        treatment: {
+            organic: 'Increase air circulation and use Copper Oxychloride.',
+            chemical: 'Spray Metalaxyl-M @ 2 g/l.'
+        }
     }
 ];
 
@@ -207,6 +252,11 @@ const calendarModal = document.getElementById('calendar-modal');
 const calendarContent = document.getElementById('calendar-content');
 const modalTitle = document.getElementById('modal-title');
 const closeModalBtn = document.querySelector('.close-modal');
+const yieldModal = document.getElementById('yield-modal');
+const yieldContent = document.getElementById('yield-content');
+const yieldModalTitle = document.getElementById('yield-modal-title');
+const diagnoseBtn = document.getElementById('diagnose-btn');
+const diagnosisResult = document.getElementById('diagnosis-result');
 // Global State
 let map;
 let currentMarker;
@@ -440,11 +490,15 @@ function showCalendar(cropId) {
 
 function closeModal() {
     calendarModal.classList.remove('active');
+    yieldModal.classList.remove('active');
 }
 
-closeModalBtn.addEventListener('click', closeModal);
+document.querySelectorAll('.close-modal').forEach(btn => {
+    btn.addEventListener('click', closeModal);
+});
+
 window.addEventListener('click', (e) => {
-    if (e.target === calendarModal) closeModal();
+    if (e.target === calendarModal || e.target === yieldModal) closeModal();
 });
 
 // Initialize on load
@@ -454,7 +508,155 @@ window.addEventListener('load', () => {
     initTheme();
     initReveals();
     initTilt();
+    setupDiagnostics();
 });
+
+function setupDiagnostics() {
+    diagnoseBtn?.addEventListener('click', runDiagnosis);
+}
+
+function runDiagnosis() {
+    const checkedSymptoms = Array.from(document.querySelectorAll('.symptom-tag input:checked'))
+        .map(input => input.value);
+
+    if (checkedSymptoms.length === 0) {
+        diagnosisResult.innerHTML = `
+            <div class="empty-state">
+                <p>Please select at least one symptom.</p>
+            </div>
+        `;
+        return;
+    }
+
+    diagnosisResult.innerHTML = `
+        <div class="weather-loading">
+            <div class="spinner"></div>
+            <p>Analyzing symptoms with AI...</p>
+        </div>
+    `;
+
+    setTimeout(() => {
+        // Find best match in diseases
+        let bestMatch = null;
+        let maxOverlap = 0;
+
+        diseases.forEach(disease => {
+            const overlap = disease.symptoms.filter(s => checkedSymptoms.includes(s)).length;
+            if (overlap > maxOverlap) {
+                maxOverlap = overlap;
+                bestMatch = disease;
+            }
+        });
+
+        if (!bestMatch || maxOverlap === 0) {
+            diagnosisResult.innerHTML = `
+                <div class="empty-state">
+                    <h3>No direct match found</h3>
+                    <p>Symptoms don't clearly match our database. Please consult a local expert.</p>
+                </div>
+            `;
+            return;
+        }
+
+        renderDiagnosis(bestMatch);
+    }, 1500);
+}
+
+function renderDiagnosis(disease) {
+    diagnosisResult.innerHTML = `
+        <div class="diagnosis-card fade-in-up">
+            <div class="disease-header">
+                <div class="disease-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                </div>
+                <div class="disease-title">
+                    <h3>${disease.name}</h3>
+                    <span class="badge">Condition Detected</span>
+                </div>
+            </div>
+            
+            <p>${disease.description}</p>
+            
+            <div class="treatment-plan">
+                <h4>Recommended Management Plan</h4>
+                <div class="treatment-list">
+                    <div class="treatment-item">
+                        <h4>Organic Solution</h4>
+                        <div class="timeline-task">${disease.treatment.organic}</div>
+                    </div>
+                    <div class="treatment-item">
+                        <h4>Chemical Control</h4>
+                        <div class="timeline-task" style="background: rgba(239, 68, 68, 0.1)">${disease.treatment.chemical}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function showYieldAnalytics(cropId, landSize) {
+    const crop = crops.find(c => c.id === cropId);
+    if (!crop) return;
+
+    yieldModalTitle.textContent = `${crop.name} - Detailed Analytics`;
+
+    const baseYield = crop.yieldPerAcre * landSize;
+    const scenarios = {
+        low: (baseYield * 0.7).toFixed(1),
+        avg: (baseYield).toFixed(1),
+        high: (baseYield * 1.3).toFixed(1)
+    };
+
+    yieldContent.innerHTML = `
+        <div class="yield-content fade-in-up">
+            <div class="yield-scenario-grid">
+                <div class="yield-scenario-card">
+                    <div class="scenario-title">Low (Stress)</div>
+                    <div class="scenario-value">${scenarios.low}</div>
+                    <div class="unit">Tons</div>
+                </div>
+                <div class="yield-scenario-card" style="border: 2px solid var(--primary)">
+                    <div class="scenario-title">Expected</div>
+                    <div class="scenario-value">${scenarios.avg}</div>
+                    <div class="unit">Tons</div>
+                </div>
+                <div class="yield-scenario-card">
+                    <div class="scenario-title">High (Optimal)</div>
+                    <div class="scenario-value">${scenarios.high}</div>
+                    <div class="unit">Tons</div>
+                </div>
+            </div>
+
+            <div class="yield-chart" id="yield-chart">
+                <div class="chart-bar" style="height: 70%" data-value="${scenarios.low}">
+                    <span class="chart-label">Low</span>
+                </div>
+                <div class="chart-bar" style="height: 100%" data-value="${scenarios.avg}">
+                    <span class="chart-label">Expected</span>
+                </div>
+                <div class="chart-bar" style="height: 100%; filter: grayscale(1); opacity: 0.3" data-value="???">
+                    <span class="chart-label">Potential</span>
+                </div>
+            </div>
+
+            <div class="glass" style="padding: 20px; font-size: 14px; opacity: 0.8;">
+                <p><strong>Note:</strong> Potential yield assumes 100% nutrient optimization and ideal weather throughout the cycle.</p>
+            </div>
+        </div>
+    `;
+    yieldModal.classList.add('active');
+
+    // Animate bars
+    setTimeout(() => {
+        const bars = document.querySelectorAll('.chart-bar');
+        bars[2].style.height = '140%';
+        bars[2].style.filter = 'none';
+        bars[2].style.opacity = '1';
+        bars[2].setAttribute('data-value', scenarios.high);
+    }, 500);
+}
 
 // Interaction
 function scrollToSection(id) {
@@ -500,6 +702,10 @@ function renderResults(results, landSize = 1.0) {
     resultsGrid.innerHTML = results.map((res, index) => {
         const estYield = (res.crop.yieldPerAcre * landSize * (res.score / 100)).toFixed(1);
 
+        // Smart Irrigation Calculation
+        const rainfall = parseFloat(document.getElementById('rainfall').value) || 0;
+        const waterNeeded = Math.max(0, (res.crop.waterFactor * (landSize * 4046.86) / 1000) - (rainfall * landSize * 4.04)).toFixed(0);
+
         return `
             <div class="crop-card glass fade-in-up" style="animation-delay: ${index * 0.1}s">
                 <div class="crop-image">
@@ -515,11 +721,23 @@ function renderResults(results, landSize = 1.0) {
                     </div>
                     <p class="crop-desc">${res.crop.description}</p>
                     
-                    <div class="yield-badge">
+                    <div class="yield-badge" style="cursor:pointer" onclick="showYieldAnalytics('${res.crop.id}', ${landSize})">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                         </svg>
-                        Est. Yield: ${estYield} Tons
+                        Est. Yield: ${estYield} Tons →
+                    </div>
+
+                    <div class="irrigation-card">
+                        <div class="irrigation-header">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 16.3c2.2 0 4-1.8 4-4 0-3.3-4-8-4-8s-4 4.7-4 8c0 2.2 1.8 4 4 4z" />
+                                <path d="M17 16.3c2.2 0 4-1.8 4-4 0-3.3-4-8-4-8s-4 4.7-4 8c0 2.2 1.8 4 4 4z" />
+                            </svg>
+                            Smart Irrigation Plan
+                        </div>
+                        <div class="irrigation-value">${Number(waterNeeded).toLocaleString()} L</div>
+                        <p style="font-size: 11px; opacity: 0.7;">Total supplemental water for ${landSize} acres.</p>
                     </div>
 
                     <div class="crop-meta" style="margin-top: 16px;">

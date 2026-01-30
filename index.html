@@ -48,6 +48,7 @@
       </div>
       <div class="nav-links">
         <a href="#features">Features</a>
+        <a href="#diagnostics-section">Diagnostics</a>
         <a href="#about">About</a>
         <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
           <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -225,6 +226,19 @@
           </div>
         </div>
 
+        <!-- Yield Analytics Modal -->
+        <div id="yield-modal" class="modal">
+          <div class="modal-content glass">
+            <div class="modal-header">
+              <h3 id="yield-modal-title">Yield Performance Analytics</h3>
+              <button class="close-modal">&times;</button>
+            </div>
+            <div id="yield-content" class="yield-content">
+              <!-- Yield data will be injected here -->
+            </div>
+          </div>
+        </div>
+
         <!-- Results Area -->
         <div id="results-area" class="results-area hidden">
           <div class="results-header">
@@ -256,6 +270,42 @@
             </div>
             <div id="fertilizer-content" class="fertilizer-content">
               <!-- Fertilizer info will be injected here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pest & Disease Diagnosis Section -->
+    <section id="diagnostics-section" class="diagnostics">
+      <div class="container">
+        <div class="section-header text-center">
+          <h2>Pest & Disease Diagnosis</h2>
+          <p>Select the symptoms you observe on your crop for an instant AI-powered diagnosis and treatment plan.</p>
+        </div>
+
+        <div class="diagnostics-grid">
+          <div class="symptom-selector glass">
+            <h3>Step 1: Select Symptoms</h3>
+            <div class="symptom-tags" id="symptom-tags">
+              <label class="symptom-tag"><input type="checkbox" value="yellow_spots"> Yellow Spots</label>
+              <label class="symptom-tag"><input type="checkbox" value="wilting"> Wilting</label>
+              <label class="symptom-tag"><input type="checkbox" value="holes_in_leaves"> Holes in Leaves</label>
+              <label class="symptom-tag"><input type="checkbox" value="white_mould"> White Mould</label>
+              <label class="symptom-tag"><input type="checkbox" value="stunted_growth"> Stunted Growth</label>
+              <label class="symptom-tag"><input type="checkbox" value="brown_edges"> Brown Edges</label>
+              <label class="symptom-tag"><input type="checkbox" value="root_rot"> Root Rot</label>
+            </div>
+            <button id="diagnose-btn" class="btn btn-primary btn-full mt-6">Run AI Diagnosis</button>
+          </div>
+
+          <div class="diagnosis-result glass" id="diagnosis-result">
+            <div class="empty-state">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                opacity="0.3">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              <p>Select symptoms to start diagnosis</p>
             </div>
           </div>
         </div>
