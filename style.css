@@ -220,6 +220,7 @@ body {
     overflow-x: hidden;
     position: relative;
     transition: background-color 0.5s ease;
+    cursor: url(http://www.rw-designer.com/cursor-extern.php?id=86776), auto;
 }
 
 .container {
@@ -267,36 +268,10 @@ body {
     }
 }
 
-/* Luxury Cursor */
-.custom-cursor {
-    width: 20px;
-    height: 20px;
-    background: var(--secondary);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease;
-    mix-blend-mode: difference;
-    transform: translate(-50%, -50%);
-}
-
+/* Custom Cursor hidden to give way to the Leaf Cursor */
+.custom-cursor,
 .custom-cursor-follower {
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--secondary);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9998;
-    transition: transform 0.15s ease-out;
-    transform: translate(-50%, -50%);
-}
-
-.cursor-hover {
-    transform: translate(-50%, -50%) scale(4);
-    background: rgba(251, 191, 36, 0.1);
-    border: none;
+    display: none !important;
 }
 
 /* Background Refine */
