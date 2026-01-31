@@ -42,11 +42,16 @@
         </div>
         <span class="brand-name">AgroPulse</span>
       </div>
-      <div class="nav-links">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
         <a href="#features">Features</a>
         <a href="#diagnostics-section">Diagnostics</a>
         <a href="#livestock-section">Livestock</a>
-        <a href="#about">About</a>
+        <a href="#community">Community</a>
         <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
           <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2">
@@ -310,6 +315,19 @@
           </div>
         </div>
 
+        <!-- Livestock Detail Modal -->
+        <div id="livestock-modal" class="modal">
+          <div class="modal-content glass">
+            <div class="modal-header">
+              <h3 id="livestock-modal-title">Live Biometrics</h3>
+              <button class="close-modal">&times;</button>
+            </div>
+            <div id="livestock-modal-content" class="livestock-modal-content">
+              <!-- Content injected here -->
+            </div>
+          </div>
+        </div>
+
         <!-- Results Area -->
         <div id="results-area" class="results-area hidden">
           <div class="results-header">
@@ -326,7 +344,15 @@
             </button>
           </div>
           <div class="results-grid" id="results-grid">
-            <!-- Results will be injected here -->
+            <div class="glass" style="grid-column: 1/-1; padding: 60px; text-align: center; opacity: 0.5;">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                style="margin-bottom: 20px;">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+              <h3>Ready for Analysis</h3>
+              <p>Fill out the form above or pick a location on the map to generate your report.</p>
+            </div>
           </div>
 
           <!-- Fertilizer Advisor (Initially Hidden) -->
@@ -446,6 +472,19 @@
         </div>
       </div>
     </section>
+
+    <!-- Community Hub Section -->
+    <section id="community" class="community">
+      <div class="container">
+        <div class="section-header text-center">
+          <h2>Community Hub</h2>
+          <p>Connect with other farmers, share field reports, and learn from the community.</p>
+        </div>
+        <div class="community-grid" id="community-grid">
+          <!-- Community reports injected here -->
+        </div>
+      </div>
+    </section>
   </main>
 
   <div class="smart-help">
@@ -475,7 +514,7 @@
   </footer>
 
   <!-- JS -->
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 
 </html>
