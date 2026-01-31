@@ -386,26 +386,7 @@ body {
     align-items: center;
 }
 
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: var(--font-heading);
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--primary);
-}
-
-.logo {
-    background: var(--primary);
-    color: white;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-}
+/* Consolidated navbar styles moved to brand-group section */
 
 .nav-links {
     display: flex;
@@ -463,10 +444,11 @@ body {
 
 /* Hero Section */
 .hero {
-    padding: 80px 0;
-    min-height: 80vh;
+    padding: 100px 0;
+    min-height: 85vh;
     display: flex;
     align-items: center;
+    background: radial-gradient(circle at 10% 20%, rgba(0, 255, 136, 0.03) 0%, transparent 40%);
 }
 
 .grid-2 {
@@ -500,6 +482,18 @@ h1 {
     margin-bottom: 24px;
     letter-spacing: -1px;
     color: var(--primary-dark);
+}
+
+.hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Center content vertically in grid */
+}
+
+.hero-visual {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .highlight {
@@ -1918,17 +1912,23 @@ select:focus {
 .brand-group {
     display: flex;
     align-items: center;
-    gap: 16px;
+    /* Ensure vertical centering */
+    gap: 12px;
     cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.brand-group:hover {
+    transform: scale(1.02);
 }
 
 .logo-container {
-    width: 42px;
-    height: 42px;
+    width: 38px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    border-radius: 8px;
     background: transparent;
     overflow: hidden;
 }
@@ -1940,14 +1940,15 @@ select:focus {
 }
 
 .brand-name {
-    font-family: var(--font-heading);
-    font-size: 24px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
     font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
     background: var(--primary-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: -0.5px;
 }
 
 /* Hero Section Enhancements */
@@ -1962,38 +1963,45 @@ select:focus {
 
 .image-container-agro {
     position: relative;
-    border-radius: var(--radius-lg);
+    border-radius: 32px;
     overflow: hidden;
-    height: 500px;
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 20px 40px -10px var(--primary-glow);
+    height: 520px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.4);
+    background: #000;
 }
 
 .hero-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 10s linear;
+    opacity: 0.9;
+    transition: transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .hero:hover .hero-img {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .hero-label {
     position: absolute;
-    bottom: 30px;
-    left: 30px;
-    background: var(--bg-card);
-    backdrop-filter: blur(10px);
-    padding: 12px 24px;
-    border-radius: 50px;
-    font-weight: 700;
+    bottom: 40px;
+    left: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     display: flex;
     align-items: center;
-    gap: 10px;
-    border: 1px solid var(--glass-border);
+    gap: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 2;
+    color: white;
 }
 
 .pulse-dot {
@@ -2077,21 +2085,7 @@ select:focus {
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 
-.float-slow {
-    animation: floating 6s ease-in-out infinite;
-}
-
-@keyframes floating {
-
-    0%,
-    100% {
-        transform: translateY(0) rotate(0);
-    }
-
-    50% {
-        transform: translateY(-30px) rotate(10deg);
-    }
-}
+/* Removed jittery animation for luxury feel */
 
 /* Services Section */
 .services {

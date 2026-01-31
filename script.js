@@ -458,7 +458,7 @@ function initReveals() {
         el.classList.add('reveal');
         observer.observe(el);
     });
-}
+};
 
 // 3D Card Tilt Effect
 function initTilt() {
