@@ -19,12 +19,18 @@
     --text-muted: #526652;
 
     /* Glassmorphism 2.0 */
+    --glass: rgba(255, 255, 255, 0.7);
     --glass-border: rgba(0, 255, 136, 0.15);
     --glass-blur: blur(20px);
     --glass-shimmer: linear-gradient(120deg,
             rgba(255, 255, 255, 0) 0%,
             rgba(0, 255, 136, 0.1) 50%,
             rgba(255, 255, 255, 0) 100%);
+
+    /* Colors */
+    --secondary: #fbbf24;
+    --text-dark: #061a06;
+    --text-light: #f0fdf4;
 
     /* Layout & Alignment */
     --container-max: 1300px;
@@ -45,6 +51,7 @@
 [data-theme="dark"] {
     --bg-light: #050805;
     --bg-card: rgba(10, 16, 10, 0.85);
+    --glass: rgba(0, 0, 0, 0.6);
     --text-main: #f0fdf4;
     --text-muted: #94a3b8;
     --glass-border: rgba(0, 255, 136, 0.2);
@@ -733,11 +740,12 @@ input,
 select {
     padding: 16px;
     border-radius: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    background: white;
+    border: 1px solid var(--glass-border);
+    background: var(--bg-card);
+    color: var(--text-main);
     font-family: inherit;
     font-size: 16px;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, background 0.3s;
     width: 100%;
 }
 
@@ -914,12 +922,13 @@ select:focus {
     position: absolute;
     top: 16px;
     right: 16px;
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--glass);
     padding: 6px 12px;
     border-radius: 50px;
     font-weight: 800;
     color: var(--primary);
     font-size: 14px;
+    backdrop-filter: blur(10px);
 }
 
 .crop-info {
@@ -1618,7 +1627,7 @@ select:focus {
 }
 
 .symptom-tag {
-    background: var(--bg-light);
+    background: var(--bg-card);
     border: 1px solid var(--glass-border);
     padding: 8px 16px;
     border-radius: 50px;
