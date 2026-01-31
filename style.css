@@ -1907,16 +1907,23 @@ select:focus {
         justify-content: center;
     }
 }
+
 /* Premium Brand & Layout Enhancements */
+.brand-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+}
+
 .logo-container {
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
-    background: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    background: transparent;
     overflow: hidden;
 }
 
@@ -1928,7 +1935,7 @@ select:focus {
 
 .brand-name {
     font-family: var(--font-heading);
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 800;
     background: var(--primary-gradient);
     -webkit-background-clip: text;
@@ -2004,8 +2011,15 @@ select:focus {
 }
 
 @keyframes dot-pulse {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(3); opacity: 0; }
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
 }
 
 /* Decorative Organic Elements */
@@ -2023,8 +2037,13 @@ select:focus {
 }
 
 @keyframes blob-float {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(-30px, 40px) scale(1.1); }
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(-30px, 40px) scale(1.1);
+    }
 }
 
 .float-deco {
@@ -2057,8 +2076,15 @@ select:focus {
 }
 
 @keyframes floating {
-    0%, 100% { transform: translateY(0) rotate(0); }
-    50% { transform: translateY(-30px) rotate(10deg); }
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0);
+    }
+
+    50% {
+        transform: translateY(-30px) rotate(10deg);
+    }
 }
 
 /* Services Section */
@@ -2124,7 +2150,9 @@ select:focus {
     z-index: 1;
 }
 
-.service-card h3, .service-card p, .service-card .btn-text {
+.service-card h3,
+.service-card p,
+.service-card .btn-text {
     position: relative;
     z-index: 1;
 }
